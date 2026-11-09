@@ -96,6 +96,7 @@ const ProtectedPageLayoutWrapper = ({ children, restricted = false }: any) => {
     const navLabel = (key: string, fallbackKey: string) => t(key, t(fallbackKey));
     const navLabels = {
         account: navLabel('sidebar.account', 'profile.title'),
+        addons: navLabel('sidebar.addons', 'addons.title'),
         agency: navLabel('sidebar.agency', 'agency'),
         links: navLabel('sidebar.links', 'links.navTitle'),
         logout: navLabel('sidebar.logout', 'logout'),

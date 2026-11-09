@@ -48,3 +48,6 @@ export const LazyTenantInvitesTab = lazyNamed(() => import('./Links/AccountInvit
 export const LazyCounsellorInvitesTab = lazyNamed(() => import('./Links/AccountInvitesTab'), 'CounsellorInvitesTab');
 export const LazyExternalInboundsTab = lazyNamed(() => import('./Links/ExternalInboundsTab'), 'ExternalInboundsTab');
 export const LazyGlobalLoginSettingsPage = lazyNamed(() => import('./GlobalSettings'), 'GlobalLoginSettingsPage');
+export const LazyAddonsLayout = lazyNamed(() => import('./Addons'), 'AddonsLayout');
+export const LazyAddonsOverview = lazyNamed(() => import('./Addons'), 'AddonsOverview');
+export const LazyAddonAdminPage = lazyNamed(() => import('./Addons'), 'AddonAdminPage');
