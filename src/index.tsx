@@ -7,10 +7,12 @@ import { message } from 'antd';
 import { createRoot, type Root } from 'react-dom/client';
 import { AdminApp } from './AdminApp';
 import { initObservability } from './observability/initObservability';
+import { installAddonShared } from './addons/addonShared';
 
 // OBS-P8 (ORISO-Helm#62): start Real User Monitoring (Core Web Vitals) export
 // to SigNoz as early as possible, before the app renders.
 initObservability();
+installAddonShared();
 
 declare global {
     interface Window {

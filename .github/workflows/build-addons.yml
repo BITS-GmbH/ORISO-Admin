@@ -1,0 +1,66 @@
+name: Build admin image with add-ons (harbor)
+
+# Same build as release-image.yml (node-build, then the Dockerfile that copies the prebuilt
+# build/ directory), pushed to harbor for the DigiSucht test instance instead of GHCR.
+
+on:
+    push:
+        branches:
+            - 'feat/**'
+    workflow_dispatch:
+
+permissions:
+    contents: read
+
+concurrency:
+    group: build-addons-${{ github.ref }}
+    cancel-in-progress: true
+
+env:
+    IMAGE: harbor.mybits.dev/digisucht/admin
+    BASE_VERSION: 2.0.11
+
+jobs:
+    build-and-push:
+        runs-on: [generic, on-prem]
+        timeout-minutes: 45
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v6
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version-file: .nvmrc
+
+            - name: Install dependencies
+              run: npm ci --ignore-scripts
+
+            - name: Build app
+              run: |
+                  set -euo pipefail
+                  export VITE_BUILD_COMMIT="$(git rev-parse --verify HEAD^{commit})"
+                  npm run build
+
+            - name: Set image tag
+              id: vars
+              run: echo "tag=${BASE_VERSION}-${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
+
+            - name: Login to Harbor
+              run: echo "${{ secrets.HARBOR_SECRET }}" | docker login https://harbor.mybits.dev -u '${{ secrets.HARBOR_USER }}' --password-stdin
+
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v4
+
+            - name: Build and push admin image
+              uses: docker/build-push-action@v7
+              with:
+                  context: .
+                  file: Dockerfile
+                  push: true
+                  tags: ${{ env.IMAGE }}:${{ steps.vars.outputs.tag }}
+                  labels: |
+                      org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+                      org.opencontainers.image.revision=${{ github.sha }}
+                      org.opencontainers.image.version=${{ steps.vars.outputs.tag }}

@@ -24,6 +24,7 @@ const SECTION_GLYPHS: Record<string, NavGlyphName> = {
     agency: 'counseling',
     counselors: 'users',
     statistics: 'statistics',
+    addons: 'addons',
     links: 'links',
     logs: 'logs',
     'activity-logs': 'logs',

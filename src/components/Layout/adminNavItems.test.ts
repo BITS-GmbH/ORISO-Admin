@@ -8,6 +8,7 @@ import { UserRole } from '../../enums/UserRole';
 
 const labels: AdminNavLabels = {
     account: 'Account',
+    addons: 'Add-ons',
     agency: 'Agencies',
     home: 'Home',
     links: 'Links',
@@ -106,6 +107,22 @@ describe('buildAdminNavItems', () => {
         expect(logEntries(items)).toHaveLength(1);
         expect(logEntries(items)[0].label).toBe(labels.logs);
         expect(logEntries(items)[0].to).toBe(expectedLanding);
+    });
+
+    it('shows the Add-ons entry to platform and Träger admins but not to Beratungsstellen-Admins', () => {
+        const forRole = (isSuperAdmin: boolean, ...roles: UserRole[]) =>
+            build({
+                isSuperAdmin,
+                hasRole: hasRoleFor(...roles),
+                can: canFor(Resource.Tenant, Resource.Agency, Resource.Consultant),
+                labels,
+                settingsPath: '/admin/theme-settings/general',
+            }).find((item) => item.key === 'addons');
+
+        expect(forRole(true, UserRole.TenantAdmin, UserRole.AgencyAdmin)?.to).toBe(routePathNames.addons);
+        expect(forRole(false, UserRole.TenantAdmin)?.label).toBe(labels.addons);
+        expect(forRole(false, UserRole.SingleTenantAdmin)).toBeDefined();
+        expect(forRole(false, UserRole.RestrictedAgencyAdmin, UserRole.UserAdmin)).toBeUndefined();
     });
 
     it('keeps the "Logs" entry highlighted across every log sub-route', () => {
