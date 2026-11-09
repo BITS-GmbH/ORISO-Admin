@@ -1,3 +1,4 @@
+import { ReactComponent as AddonsGlyph } from '../../resources/img/svg/nav-glyphs/addons.svg';
 import { ReactComponent as CounselingGlyph } from '../../resources/img/svg/nav-glyphs/counseling.svg';
 import { ReactComponent as DisplaySettingsGlyph } from '../../resources/img/svg/nav-glyphs/display_settings.svg';
 import { ReactComponent as LinksGlyph } from '../../resources/img/svg/nav-glyphs/links.svg';
@@ -21,6 +22,7 @@ import { ReactComponent as UsersGlyph } from '../../resources/img/svg/nav-glyphs
  * mask stripped and every fill switched to `currentColor`.
  */
 export const NAV_GLYPHS = {
+    addons: AddonsGlyph,
     counseling: CounselingGlyph,
     displaySettings: DisplaySettingsGlyph,
     links: LinksGlyph,

@@ -21,6 +21,7 @@ import { useReleasesToggle } from './hooks/useReleasesToggle.hook';
 import { usePublicTenantData } from './hooks/usePublicTenantData.hook';
 import { useUserRoles } from './hooks/useUserRoles.hook';
 import { resolveVisibleLinksTabs } from './constants/linksAccess';
+import { canSeeAddonsSection } from './constants/addonsAccess';
 import { UserRole } from './enums/UserRole';
 import { canReadCaseHandoverAdmin, canSeeSupervisorLogs } from './constants/caseHandoverAccess';
 import { useAppConfigContext } from './context/useAppConfig';
@@ -28,6 +29,9 @@ import { useAdminTheme } from './hooks/useAdminTheme.hook';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { AgencyDefaultSectionRedirect } from './pages/Agency/Edit/AgencyDefaultSectionRedirect';
 import {
+    LazyAddonAdminPage,
+    LazyAddonsLayout,
+    LazyAddonsOverview,
     LazyAgencyList,
     LazyAgencySetupPage,
     LazyAgencyPageEdit,
@@ -153,6 +157,7 @@ export const App = () => {
     const showCaseHandoverLogs = canReadCaseHandoverAdmin(isSuperAdmin, can);
     const visibleLinksTabs = resolveVisibleLinksTabs({ isSuperAdmin, hasRole });
     const showSupervisorLogs = canSeeSupervisorLogs(isSuperAdmin, can);
+    const showAddons = canSeeAddonsSection({ isSuperAdmin, hasRole });
     const requiresTwoFactorSetup = requiresMandatoryTwoFactor({
         roles,
         isTechnicalAccount,
@@ -405,6 +410,13 @@ export const App = () => {
                                 <Route path="/admin/users/tenant-admins/:id" element={<LazyTenantAdminEditOrAdd />} />
                                 <Route path="/admin/users/platform-admins/:id" element={<LazyTenantAdminEditOrAdd />} />
                                 <Route path="/admin/users/:typeOfUsers/:id" element={<LazyUserEditOrAdd />} />
+                                {showAddons && (
+                                    <Route path={routePathNames.addons} element={<LazyAddonsLayout />}>
+                                        <Route index element={<LazyAddonsOverview />} />
+                                        <Route path="apps/:addonName/:appId" element={<LazyAddonAdminPage />} />
+                                        <Route path="*" element={<Navigate to={routePathNames.addons} replace />} />
+                                    </Route>
+                                )}
                                 {visibleLinksTabs.length > 0 && (
                                     <Route path="/admin/links" element={<LazyLinksPage />}>
                                         <Route index element={<LazyLinksIndexRedirect />} />

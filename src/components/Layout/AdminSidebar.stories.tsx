@@ -170,6 +170,7 @@ export const TenantAdminWithUserAdmin: Story = {
             ),
             labels: {
                 account: 'Mein Konto',
+                addons: 'Add-ons',
                 agency: 'Beratungsstellen',
                 links: 'Links',
                 logs: 'Logs',
@@ -197,6 +198,7 @@ export const RestrictedAgencyAdmin: Story = {
             can: canFor(Resource.Agency, Resource.Consultant),
             labels: {
                 account: 'Mein Konto',
+                addons: 'Add-ons',
                 agency: 'Beratungsstellen',
                 links: 'Links',
                 logs: 'Logs',

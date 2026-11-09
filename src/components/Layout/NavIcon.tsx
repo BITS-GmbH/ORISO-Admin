@@ -28,6 +28,9 @@ import { ReactComponent as LinksInactiveIcon } from '../../resources/img/svg/nav
 import { ReactComponent as LogsActiveIcon } from '../../resources/img/svg/navbar/logs_active.svg';
 import { ReactComponent as LogsHoverIcon } from '../../resources/img/svg/navbar/logs_hover.svg';
 import { ReactComponent as LogsInactiveIcon } from '../../resources/img/svg/navbar/logs_inactive.svg';
+import { ReactComponent as AddonsActiveIcon } from '../../resources/img/svg/navbar/settings_active.svg';
+import { ReactComponent as AddonsHoverIcon } from '../../resources/img/svg/navbar/settings_hover.svg';
+import { ReactComponent as AddonsInactiveIcon } from '../../resources/img/svg/navbar/settings_inactive.svg';
 import { ReactComponent as LogoutActiveIcon } from '../../resources/img/svg/navbar/logout_active.svg';
 import { ReactComponent as LogoutHoverIcon } from '../../resources/img/svg/navbar/logout_hover.svg';
 import { ReactComponent as LogoutInactiveIcon } from '../../resources/img/svg/navbar/logout_inactive.svg';
@@ -123,6 +126,12 @@ const Icon = ({ path, hover }: { path: string; hover: boolean }) => {
                 active: <LinksActiveIcon />,
                 hover: <LinksHoverIcon />,
                 inactive: <LinksInactiveIcon />,
+            });
+        case routePathNames.addons:
+            return selectIcon(iconState, {
+                active: <AddonsActiveIcon />,
+                hover: <AddonsHoverIcon />,
+                inactive: <AddonsInactiveIcon />,
             });
         case routePathNames.userProfile:
             return selectIcon(iconState, {
