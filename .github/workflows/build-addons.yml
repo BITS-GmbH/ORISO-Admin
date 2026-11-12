@@ -18,7 +18,7 @@ concurrency:
 
 env:
     IMAGE: harbor.mybits.dev/digisucht/admin
-    BASE_VERSION: 2.0.11
+    BASE_VERSION: 2.0.15
 
 jobs:
     build-and-push:
