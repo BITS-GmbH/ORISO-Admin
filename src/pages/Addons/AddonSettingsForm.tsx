@@ -1,7 +1,8 @@
-import { Button, Form, Input, InputNumber, Select, Switch } from 'antd';
+import { Button, Form, Input, InputNumber, Switch } from 'antd';
 import type { Rule } from 'antd/es/form';
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { M3Select } from '../../components/M3Select';
 import type { AddonSettingsValues, JsonSchema } from '../../addons/addonTypes';
 import { collectSettingsValues, initialSettingsValues, settingsFields, type SettingsField } from './settingsSchema';
 
@@ -66,7 +67,7 @@ const renderControl = (field: SettingsField, id: string) => {
         case 'number':
             return <InputNumber id={id} min={field.minimum} max={field.maximum} />;
         case 'select':
-            return <Select id={id} allowClear={!field.required} options={field.options} />;
+            return <M3Select id={id} allowClear={!field.required} options={field.options} />;
         case 'textarea':
             return <Input.TextArea id={id} rows={4} maxLength={field.maxLength} showCount={!!field.maxLength} />;
         default:

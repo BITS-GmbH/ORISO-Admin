@@ -1,7 +1,7 @@
-import { Select } from 'antd';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { useTranslation } from 'react-i18next';
+import { M3Select } from '../../components/M3Select';
 import { searchTenantData } from '../../api/tenant/searchTenantData';
 import { searchInviteAgencies } from '../../api/agency/searchInviteAgencies';
 import decodeHTML from '../../utils/decodeHTML';
@@ -78,7 +78,7 @@ const RemoteSearchSelect = ({
     }, [options, excludeIds, value, selectedOption]);
 
     return (
-        <Select
+        <M3Select
             id={id}
             aria-label={ariaLabel}
             className={className}
