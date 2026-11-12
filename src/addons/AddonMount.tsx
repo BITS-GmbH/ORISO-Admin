@@ -27,6 +27,7 @@ export const AddonMount = ({
 }: AddonMountProps) => {
     const { t } = useTranslation();
     const element = useRef<HTMLDivElement>(null);
+    const lifecycle = useRef<Promise<void>>(Promise.resolve());
     const [failed, setFailed] = useState(false);
     const hostProps = useAddonHostProps(addon, app, tenant);
 
@@ -39,7 +40,8 @@ export const AddonMount = ({
         let mounted: { module: AddonModule; props: AddonHostProps } | null = null;
         setFailed(false);
 
-        (async () => {
+        // Mounting waits until the previous app on this element has unmounted; both share one DOM node.
+        const mounting = lifecycle.current.then(async () => {
             try {
                 const module = await loader(`${baseUrl}${addon.entry}`);
                 const props: AddonHostProps = { ...hostProps, domElement };
@@ -52,10 +54,6 @@ export const AddonMount = ({
                 }
                 await module.mount(props);
                 mounted = { module, props };
-                if (!active) {
-                    await module.unmount(props);
-                    mounted = null;
-                }
             } catch (error) {
                 // eslint-disable-next-line no-console
                 console.error(`Add-on ${addon.name}/${app.id} failed`, error);
@@ -63,17 +61,22 @@ export const AddonMount = ({
                     setFailed(true);
                 }
             }
-        })();
+        });
+        lifecycle.current = mounting;
 
         return () => {
             active = false;
-            if (mounted) {
-                const { module, props } = mounted;
-                Promise.resolve(module.unmount(props)).catch((error) =>
+            lifecycle.current = mounting.then(async () => {
+                if (!mounted) {
+                    return;
+                }
+                try {
+                    await mounted.module.unmount(mounted.props);
+                } catch (error) {
                     // eslint-disable-next-line no-console
-                    console.error(`Add-on ${addon.name}/${app.id} failed to unmount`, error),
-                );
-            }
+                    console.error(`Add-on ${addon.name}/${app.id} failed to unmount`, error);
+                }
+            });
         };
     }, [addon, app.id, hostProps, loader, baseUrl]);
 
