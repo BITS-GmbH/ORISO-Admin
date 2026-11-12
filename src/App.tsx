@@ -35,6 +35,7 @@ import { AgencyDefaultSectionRedirect } from './pages/Agency/Edit/AgencyDefaultS
 import { LegacyAppSettingsRedirect } from './pages/Tenants/Edit/LegacyAppSettingsRedirect';
 import {
     LazyAddonAdminPage,
+    LazyAddonAuditLogsPage,
     LazyAddonsLayout,
     LazyAddonsOverview,
     LazyAgencyList,
@@ -316,6 +317,7 @@ export const App = () => {
                                             showCaseHandover={showCaseHandoverLogs}
                                             showInactive={isSuperAdmin}
                                             showDeletion={canSeeDeletionAuditLogs}
+                                            showAddons={showAddons}
                                         />
                                     }
                                 >
@@ -345,6 +347,12 @@ export const App = () => {
                                         <Route
                                             path={routePathNames.caseHandoverLogs}
                                             element={<LazyCaseHandoverLogsPage />}
+                                        />
+                                    )}
+                                    {showAddons && (
+                                        <Route
+                                            path={routePathNames.addonAuditLogs}
+                                            element={<LazyAddonAuditLogsPage />}
                                         />
                                     )}
                                 </Route>
