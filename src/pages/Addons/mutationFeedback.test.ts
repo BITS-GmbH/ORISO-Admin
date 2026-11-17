@@ -1,5 +1,5 @@
 import type { TFunction } from 'i18next';
-import { describe, expect, it, vi } from 'vite-plus/test';
+import { describe, expect, it, vi } from 'vitest';
 import { reportAddonSaveError } from './mutationFeedback';
 
 const t = ((key: string) => key) as unknown as TFunction;
