@@ -1,5 +1,6 @@
-import { Alert, Card, Spin, Statistic } from 'antd';
+import { Alert, Card, Statistic } from 'antd';
 import { useTranslation } from 'react-i18next';
+import { AddonsLoading } from './AddonsLoading';
 import { localizedText, type AddonStatDefinition } from '../../addons/addonTypes';
 import { useAddonStats } from './useAddons';
 import styles from './addons.module.scss';
@@ -16,7 +17,7 @@ export const AddonStatsTiles = ({ name, tenantId, definitions }: AddonStatsTiles
     const stats = useAddonStats(name, tenantId, definitions.length > 0);
 
     if (stats.isLoading) {
-        return <Spin aria-label={String(t('addons.loading'))} />;
+        return <AddonsLoading />;
     }
     if (stats.isError) {
         return <Alert type="warning" showIcon message={t('addons.stats.loadError')} />;
