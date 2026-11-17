@@ -22,7 +22,7 @@ env:
 
 jobs:
     build-and-push:
-        runs-on: [generic, on-prem]
+        runs-on: ubuntu-latest
         timeout-minutes: 45
 
         steps:
